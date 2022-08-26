@@ -6,6 +6,7 @@ const path = require('path');
 const fs = require('fs');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const { ESBuildMinifyPlugin } = require('esbuild-loader')
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -43,7 +44,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ['babel-loader'],
+        use: ['esbuild-loader'],
       },
       {
         test: /\.(png|gif|jpe?g|svg)$/i,
@@ -74,6 +75,7 @@ module.exports = {
   optimization: {
     minimizer: [
       '...',
+      new ESBuildMinifyPlugin({css: true}),
       new ImageMinimizerPlugin({
         minimizer: {
           implementation: ImageMinimizerPlugin.imageminMinify,
